@@ -200,14 +200,15 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				next_error_state <= memory_error; --�ltima direcci�n incorrecta (intento de escritura en registro de lectura)
 				load_addr_error <= '1';
 			elsif (RE= '1' and  hit='1') then -- si piden y es acierto de lectura mandamos el dato
-		        next_state <= Inicio;
+				next_state <= Inicio;
 				ready <= '1';
 				inc_r <= '1'; -- se lee la MC
 				mux_output <= "00"; --Es el valor por defecto. No hace falta ponerlo. La salida es un dato almacenado en la MC
 			elsif ( WE= '1' and  hit='1') then -- si piden y es acierto de escritura 
-					Update_dirty <= '1';
-					ready <= '1';
-					inc_w <= '1';
+				next_state <= Inicio;
+				Update_dirty <= '1';
+				ready <= '1';
+				inc_w <= '1';
 			elsif (((RE= '1') or (WE= '1')) and (hit='0')) then  --fallo de lectura
 				--completar
 			end if;
