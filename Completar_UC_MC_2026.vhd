@@ -209,6 +209,11 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				Update_dirty <= '1';
 				ready <= '1';
 				inc_w <= '1';
+				if(hit1 = '1') then
+					MC_WE1 <= '1';
+				elsif(hit0 = '1') then
+					MC_WE0 <= '1'; 
+				end if;
 			elsif (((RE= '1') or (WE= '1')) and (hit='0')) then  --fallo de lectura
 				--completar
 			end if;
