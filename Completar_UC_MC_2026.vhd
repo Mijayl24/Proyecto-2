@@ -214,11 +214,98 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				elsif(hit0 = '1') then
 					MC_WE0 <= '1'; 
 				end if;
-			elsif (((RE= '1') or (WE= '1')) and (hit='0')) then  --fallo de lectura
-				--completar
+			elsif (((RE= '1') or (WE= '1')) and (hit='0')) then  --fallo de lectura/escritura
+				if(addr_non_cacheable = '1') then
+					next_state <= single_word_transfer_addr;
+				elsif(WE = '1') then
+					inc_m <= '1';
+					next_state <= single_word_transfer_addr;
+				else
+					inc_m <= '1';
+					next_state <= block_transfer_addr;
+					
+				end if;
 			end if;
-    -- COMPLETE  with other states
-		
+
+		When block_transfer_addr =>
+			Bus_req <= '1';
+			if(Bus_grant = '0') then	-- bus no disponible
+				next_state <= block_transfer_addr;
+			elsif(Bus_grant = '1') then	-- bus disponible
+				MC_send_addr_ctrl <= '1';
+				Frame <= '1';
+
+				if (dirty_bit_rpl = '1') then
+					send_dirty <= '1';
+					MC_bus_Write <= '1';
+					next_state <= CopyBack;
+				else
+					block_addr <= '1';
+					MC_bus_Read <= '1';
+					next_state <= block_transfer_data;
+				end if;
+
+				if(Bus_DevSel = '0') then	-- No es reconocida
+					next_error_state <= memory_error;
+					load_addr_error <= '1';
+					ready <= '1';
+					next_state <= Inicio;
+				end if;
+			end if;
+			
+		When single_word_transfer_addr =>
+			Bus_req <= '1';
+			one_word <= '1';
+			if(Bus_grant = '0') then	-- bus no disponible
+				next_state <= single_word_transfer_addr;
+			elsif(Bus_grant = '1') then	-- bus disponible
+				Frame <= '1';
+				MC_send_addr_ctrl <= '1';
+				if (RE = '1') then
+					MC_bus_Read <= '1';
+				else
+					MC_bus_Write <= '1';
+				end if;
+				if(Bus_DevSel = '1') then --Coincide las direcciones con MD o MD Scracth
+					next_state <= single_word_transfer_data;--En este estado seguramente tengamos que poner el Mux_output = '01'
+				else	-- No es reconocida
+					next_error_state <= memory_error;
+					load_addr_error <= '1';
+					ready <= '1';
+					next_state <= Inicio;
+				end if;
+
+			end if;
+		When single_word_transfer_data =>
+			Bus_req <= '1';
+			if(bus_TRDY = '0') then
+				next_state <= single_word_transfer_data;
+			else
+				last_word <= '1'; -- transferencia de una palabra, Frame se baja solo
+				if(RE = '1') then
+					inc_r <= '1';
+					mux_output <= "01";
+				else
+					inc_w <= '1';
+				end if;
+				ready <= '1';
+				next_state <= Inicio;
+			end if;
+
+		when block_transfer_data =>
+			Bus_req <= '1';
+			Frame <= '1';
+			if(bus_TRDY = '0') then
+				next_state <= block_transfer_data;
+			else
+				count_enable <= '1';
+				if(last_word_block = '1') then
+					last_word <= '1';
+					Frame <= '0';
+					ready <= '1';
+					next_state <= Inicio;
+				else
+
 		WHEN others => 	
 	end CASE;    
 	
