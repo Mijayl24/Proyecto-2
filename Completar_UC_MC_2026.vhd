@@ -104,7 +104,7 @@ signal palabra_UC : STD_LOGIC_VECTOR (1 downto 0);
 begin
 
 hit <= hit0 or hit1;	
- 
+
 --el contador nos dice cuantas palabras hemos recibido. Se usa para saber cuando se termina la transferencia del bloque y para direccionar la palabra en la que se escribe el dato leido del bus en la MC
 word_counter: counter 	generic map (size => 2)
 						port map (clk, reset, count_enable, palabra_UC); --indica la palabra actual dentro de una transferencia de bloque (1�, 2�...)
@@ -299,13 +299,45 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				next_state <= block_transfer_data;
 			else
 				count_enable <= '1';
+
+				-- Escribimos en la vía de caché seleccionada
+				if (via_2_rpl = '1') then
+					MC_WE1 <= '1';
+				else
+					MC_WE0 <= '1';
+				end if;
+
 				if(last_word_block = '1') then
 					last_word <= '1';
 					Frame <= '0';
 					ready <= '1';
+					MC_tags_WE <= '1';
 					next_state <= Inicio;
 				else
-
+					next_state <= block_transfer_data;
+				end if;
+		
+		when CopyBack =>
+			Bus_req <= '1';
+			Frame <= '1';
+			MC_send_data <= '1';
+			MC_bus_Write <= '1';
+			send_dirty <= '1';
+			if(bus_TRDY = '0') then
+				next_state <= CopyBack;
+			else
+				count_enable <= '1';
+				if (last_word_block = '1') then
+					last_word <= '1';
+					Frame <= '0';
+					inc_cb <= '1';
+					Block_copied_back <= '1';
+					Update_dirty <= '1';
+					next_state <= block_transfer_addr;
+				else
+					next_state <= CopyBack;
+				end if;
+			end if;
 		WHEN others => 	
 	end CASE;    
 	
