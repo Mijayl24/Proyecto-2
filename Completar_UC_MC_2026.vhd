@@ -267,7 +267,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 					MC_bus_Write <= '1';
 				end if;
 				if(Bus_DevSel = '1') then --Coincide las direcciones con MD o MD Scracth
-					next_state <= single_word_transfer_data;--En este estado seguramente tengamos que poner el Mux_output = '01'
+					next_state <= single_word_transfer_data;
 				else	-- No es reconocida
 					next_error_state <= memory_error;
 					load_addr_error <= '1';
@@ -278,14 +278,17 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 			end if;
 		When single_word_transfer_data =>
 			Bus_req <= '1';
+			Frame <= '1';
 			if(bus_TRDY = '0') then
 				next_state <= single_word_transfer_data;
 			else
-				last_word <= '1'; -- transferencia de una palabra, Frame se baja solo
+				last_word <= '1';
+				Frame <= '0';
 				if(RE = '1') then
 					inc_r <= '1';
 					mux_output <= "01";
 				else
+					MC_send_data <= '1';
 					inc_w <= '1';
 				end if;
 				ready <= '1';
@@ -295,6 +298,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 		when block_transfer_data =>
 			Bus_req <= '1';
 			Frame <= '1';
+			mux_origen <= '1';
 			if(bus_TRDY = '0') then
 				next_state <= block_transfer_data;
 			else
@@ -310,7 +314,6 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				if(last_word_block = '1') then
 					last_word <= '1';
 					Frame <= '0';
-					ready <= '1';
 					MC_tags_WE <= '1';
 					next_state <= Inicio;
 				else
@@ -323,6 +326,8 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 			MC_send_data <= '1';
 			MC_bus_Write <= '1';
 			send_dirty <= '1';
+			mux_origen <= '1';
+			
 			if(bus_TRDY = '0') then
 				next_state <= CopyBack;
 			else
