@@ -235,22 +235,23 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				MC_send_addr_ctrl <= '1';
 				Frame <= '1';
 
-				if (dirty_bit_rpl = '1') then
-					send_dirty <= '1';
-					MC_bus_Write <= '1';
-					next_state <= CopyBack;
-				else
-					block_addr <= '1';
-					MC_bus_Read <= '1';
-					next_state <= block_transfer_data;
-				end if;
-
 				if(Bus_DevSel = '0') then	-- No es reconocida
 					next_error_state <= memory_error;
 					load_addr_error <= '1';
 					ready <= '1';
+					Frame <= '0';
 					next_state <= Inicio;
-				end if;
+				else
+					if (dirty_bit_rpl = '1') then
+						send_dirty <= '1';
+						MC_bus_Write <= '1';
+						next_state <= CopyBack;
+					else
+						block_addr <= '1';
+						MC_bus_Read <= '1';
+						next_state <= block_transfer_data;
+					end if;
+				end if;	
 			end if;
 			
 		When single_word_transfer_addr =>
@@ -259,14 +260,14 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 			if(Bus_grant = '0') then	-- bus no disponible
 				next_state <= single_word_transfer_addr;
 			elsif(Bus_grant = '1') then	-- bus disponible
-				Frame <= '1';
-				MC_send_addr_ctrl <= '1';
-				if (RE = '1') then
-					MC_bus_Read <= '1';
-				else
-					MC_bus_Write <= '1';
-				end if;
 				if(Bus_DevSel = '1') then --Coincide las direcciones con MD o MD Scracth
+					Frame <= '1';
+					MC_send_addr_ctrl <= '1';
+					if (RE = '1') then
+						MC_bus_Read <= '1';
+					else
+						MC_bus_Write <= '1';
+					end if;
 					next_state <= single_word_transfer_data;
 				else	-- No es reconocida
 					next_error_state <= memory_error;
@@ -314,11 +315,12 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				if(last_word_block = '1') then
 					last_word <= '1';
 					Frame <= '0';
-					MC_tags_WE <= '1';
+					MC_tags_WE <= '1';	
 					next_state <= Inicio;
 				else
 					next_state <= block_transfer_data;
 				end if;
+			end if;
 		
 		when CopyBack =>
 			Bus_req <= '1';
