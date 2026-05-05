@@ -286,11 +286,9 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				last_word <= '1';
 				Frame <= '0';
 				if(RE = '1') then
-					inc_r <= '1';
 					mux_output <= "01";
 				else
 					MC_send_data <= '1';
-					inc_w <= '1';
 				end if;
 				ready <= '1';
 				next_state <= Inicio;
