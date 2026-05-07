@@ -183,27 +183,32 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 		    if (RE = '0' and WE = '0') then -- si no piden nada no hacemos nada
 				next_state <= Inicio;
 				ready <= '1';
+
 			elsif ((RE = '1') or (WE = '1')) and  (unaligned ='1') then -- si el procesador quiere leer una direcci�n no alineada
 				-- Se procesa el error y se ignora la solicitud
 				next_state <= Inicio;
 				ready <= '1';
 				next_error_state <= memory_error; --�ltima direcci�n incorrecta (no alineada)
 				load_addr_error <= '1';
+
 		    elsif (RE= '1' and  internal_addr ='1') then -- si quieren leer un registro de la MC se lo mandamos
 		    	next_state <= Inicio;
 				ready <= '1';
 				mux_output <= "10"; -- La salida es un registro interno de la MC
 				next_error_state <= No_error; --Cuando se lee el registro interno el controlador quita la se�al de error
+
 			elsif (WE = '1'  and  internal_addr ='1') then -- si quieren escribir en el registro interno de la MC se genera un error porque es s�lo de lectura
 		    	next_state <= Inicio;
 				ready <= '1';
 				next_error_state <= memory_error; --�ltima direcci�n incorrecta (intento de escritura en registro de lectura)
 				load_addr_error <= '1';
+
 			elsif (RE= '1' and  hit='1') then -- si piden y es acierto de lectura mandamos el dato
 				next_state <= Inicio;
 				ready <= '1';
 				inc_r <= '1'; -- se lee la MC
 				mux_output <= "00"; --Es el valor por defecto. No hace falta ponerlo. La salida es un dato almacenado en la MC
+
 			elsif ( WE= '1' and  hit='1') then -- si piden y es acierto de escritura 
 				next_state <= Inicio;
 				Update_dirty <= '1';
@@ -214,93 +219,91 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				elsif(hit0 = '1') then
 					MC_WE0 <= '1'; 
 				end if;
+
 			elsif (((RE= '1') or (WE= '1')) and (hit='0')) then  --fallo de lectura/escritura
-				if(addr_non_cacheable = '1') then
-					next_state <= single_word_transfer_addr;
-				elsif(WE = '1') then
-					inc_m <= '1';
-					next_state <= single_word_transfer_addr;
+				Bus_req <= '1';
+				if(Bus_grant = '0') then
+					next_state <= Inicio;
 				else
-					inc_m <= '1';
-					next_state <= block_transfer_addr;
-					
+					if(addr_non_cacheable = '1' or WE = '1') then
+						one_word <= '1';
+						next_state <= single_word_transfer_addr;
+					else
+						next_state <= block_transfer_addr;
+					end if;
 				end if;
 			end if;
 
 		When block_transfer_addr =>
-			Bus_req <= '1';
-			if(Bus_grant = '0') then	-- bus no disponible
-				next_state <= block_transfer_addr;
-			elsif(Bus_grant = '1') then	-- bus disponible
-				MC_send_addr_ctrl <= '1';
-				Frame <= '1';
+			MC_send_addr_ctrl <= '1';
+			Frame <= '1';
+			block_addr <= '1';
 
-				if (dirty_bit_rpl = '1') then
-					send_dirty <= '1';
-					MC_bus_Write <= '1';
-					next_state <= CopyBack;
-				else
-					block_addr <= '1';
-					MC_bus_Read <= '1';
-					next_state <= block_transfer_data;
-				end if;
-			end if;	
-			
-			
-		When single_word_transfer_addr =>
-			Bus_req <= '1';
-			one_word <= '1';
-			if(Bus_grant = '0') then	-- bus no disponible
-				next_state <= single_word_transfer_addr;
-			elsif(Bus_grant = '1') then	-- bus disponible
-				Frame <= '1';
-				MC_send_addr_ctrl <= '1';
-				if (RE = '1') then
-					MC_bus_Read <= '1';
-				else
-					MC_bus_Write <= '1';
-				end if;
-				next_state <= single_word_transfer_data;
+			if (dirty_bit_rpl = '1') then
+				MC_bus_Write <= '1';
+				send_dirty <= '1';
+				next_state <= CopyBack;
+			else
+				MC_bus_Read <= '1';
+				next_state <= block_transfer_data;
 			end if;
 
-		When single_word_transfer_data =>
-			Bus_req <= '1';
-			Frame <= '1';
 			if(Bus_DevSel = '0') then	-- No es reconocida
 				next_error_state <= memory_error;
 				load_addr_error <= '1';
 				ready <= '1';
-				Frame <= '0';
 				next_state <= Inicio;
-			elsif(bus_TRDY = '0') then
+			end if;	
+
+			
+		When single_word_transfer_addr =>
+			Frame <= '1';
+			MC_send_addr_ctrl <= '1';
+			
+			if (RE = '1') then
+				MC_bus_Read <= '1';
+			else
+				MC_bus_Write <= '1';
+			end if;
+
+			if(Bus_DevSel = '1') then --Coincide las direcciones con MD o MD Scracth
+				next_state <= single_word_transfer_data;
+			else	-- No es reconocida
+				next_error_state <= memory_error;
+				load_addr_error <= '1';
+				ready <= '1';
+				next_state <= Inicio;
+			end if;
+
+		When single_word_transfer_data =>
+			Frame <= '1';
+
+			if(bus_TRDY = '0') then
 				next_state <= single_word_transfer_data;
 			else
 				last_word <= '1';
-				Frame <= '0';
+
 				if(RE = '1') then
 					mux_output <= "01";
 				else
 					MC_send_data <= '1';
+					if(addr_non_cacheable = '0') then
+						inc_m <= '1';
+					end if;
 				end if;
+
 				ready <= '1';
 				next_state <= Inicio;
 			end if;
 
 		when block_transfer_data =>
-			Bus_req <= '1';
 			Frame <= '1';
 			mux_origen <= '1';
-			if(Bus_DevSel = '0') then	-- No es reconocida
-				next_error_state <= memory_error;
-				load_addr_error <= '1';
-				ready <= '1';
-				Frame <= '0';
-				next_state <= Inicio;
-			elsif(bus_TRDY = '0') then
+
+			if(bus_TRDY = '0') then
 				next_state <= block_transfer_data;
 			else
 				count_enable <= '1';
-
 				-- Escribimos en la vía de caché seleccionada
 				if (via_2_rpl = '1') then
 					MC_WE1 <= '1';
@@ -310,39 +313,31 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 
 				if(last_word_block = '1') then
 					last_word <= '1';
-					Frame <= '0';
 					MC_tags_WE <= '1';	
 					next_state <= Inicio;
+					inc_m <= '1';
 				else
 					next_state <= block_transfer_data;
 				end if;
 			end if;
 		
 		when CopyBack =>
-			Bus_req <= '1';
 			Frame <= '1';
 			MC_send_data <= '1';
 			MC_bus_Write <= '1';
 			send_dirty <= '1';
 			mux_origen <= '1';
 			
-			if(Bus_DevSel = '0') then	-- No es reconocida
-				next_error_state <= memory_error;
-				load_addr_error <= '1';
-				ready <= '1';
-				Frame <= '0';
-				next_state <= Inicio;
-			elsif(bus_TRDY = '0') then
+			if(bus_TRDY = '0') then
 				next_state <= CopyBack;
 			else
 				count_enable <= '1';
 				if (last_word_block = '1') then
 					last_word <= '1';
-					Frame <= '0';
 					inc_cb <= '1';
 					Block_copied_back <= '1';
 					Update_dirty <= '1';
-					next_state <= block_transfer_addr;
+					next_state <= Inicio;
 				else
 					next_state <= CopyBack;
 				end if;
