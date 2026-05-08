@@ -7,6 +7,8 @@
 -- Set 0
 LW R1, 0(R0)    -- Fallo (Carga Vía 0).  GTKWave R1 -> X"00000001"
 LW R1, 4(R0)    -- Acierto.              GTKWave R1 -> X"00000002"
+LW R1, 8(R0)    -- Acierto.              GTKWave R1 -> X"00000003"
+LW R1, 12(R0)    -- Acierto.              GTKWave R1 -> X"00000004"
 
 -- Set 1
 LW R1, 16(R0)   -- Fallo (Carga Vía 0).  GTKWave R1 -> X"00000005"
@@ -31,6 +33,8 @@ LW R1, 68(R0)   -- Acierto.              GTKWave R1 -> X"00000012"
 -- Set 1
 LW R1, 80(R0)   -- Fallo (Carga Vía 1).  GTKWave R1 -> X"00000015"
 LW R1, 84(R0)   -- Acierto.              GTKWave R1 -> X"00000016"
+LW R1, 88(R0)   -- Acierto.              GTKWave R1 -> X"00000017"
+LW R1, 92(R0)   -- Acierto.              GTKWave R1 -> X"00000018"
 
 -- Set 2
 LW R1, 96(R0)   -- Fallo (Carga Vía 1).  GTKWave R1 -> X"00000019"
@@ -58,6 +62,8 @@ LW R1, 148(R0)  -- Acierto.              GTKWave R1 -> X"00000026"
 -- Set 2
 LW R1, 160(R0)  -- Fallo (Reemplazo).    GTKWave R1 -> X"00000029"
 LW R1, 164(R0)  -- Acierto.              GTKWave R1 -> X"0000002A"
+LW R1, 168(R0)  -- Acierto.              GTKWave R1 -> X"0000002B"
+LW R1, 172(R0)  -- Acierto.              GTKWave R1 -> X"0000002C"
 
 -- Set 3
 LW R1, 176(R0)  -- Fallo (Reemplazo).    GTKWave R1 -> X"0000002D"
