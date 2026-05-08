@@ -16,7 +16,7 @@ LW R4, 12(R0)    -- R4 = X"000000FF" (Dato 3)
 -- Al usar R9 como base, las direcciones enviadas tendrán el prefijo X"100000".
 -- Esto activa la señal 'addr_non_cacheable' y van directas al bus.
 
-SW R2, 0(R9)     -- Escribe X"55" en la palabra 0 de la Scratch (@ X"10000000")
+SW R2, 0(R9)     -- Escribe X"55" en la palabra 0 de la Scratch (@ X"10000000")--Este dato sera modificado si o si porque IO_Master escribe ZZZs en la primera direccion de la Scratch
 SW R3, 4(R9)     -- Escribe X"AA" en la palabra 1 de la Scratch (@ X"10000004")
 SW R4, 8(R9)     -- Escribe X"FF" en la palabra 2 de la Scratch (@ X"10000008")
 
@@ -26,6 +26,6 @@ SW R4, 8(R9)     -- Escribe X"FF" en la palabra 2 de la Scratch (@ X"10000008")
 -- ==================================================================
 -- Reutilizamos R1 para ver los cambios secuenciales de forma limpia en GTKWave.
 
-LW R1, 0(R9)     -- Lee de Scratch. GTKWave R1 -> X"00000055"
+LW R1, 0(R9)     -- Lee de Scratch. GTKWave R1 -> X"00000055"--Aqui seguramente que lea ZZZs
 LW R1, 4(R9)     -- Lee de Scratch. GTKWave R1 -> X"000000AA"
 LW R1, 8(R9)     -- Lee de Scratch. GTKWave R1 -> X"000000FF"
