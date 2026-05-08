@@ -1,44 +1,64 @@
 -- Asumimos que R0 = 0.
--- ------------------------------------------------------------------
--- 1. PRUEBA EN LA VÍA 1 (Internamente Vía 0 de la caché)
--- ------------------------------------------------------------------
--- FALLO (Miss). La caché está vacía. Se trae el Bloque A entero 
--- (palabras 0 a 3) y se aloja en la Vía 0 del Conjunto 0. 
--- Valor esperado en R1: X"00000001" (1 en decimal)
-LW R1, 0(R0)
+-- Vamos a usar únicamente R1 para toda la traza.
 
--- ACIERTO (Hit). Leemos la siguiente palabra del mismo Bloque A.
--- Valor esperado en R2: X"00000002" (2 en decimal)
-LW R2, 4(R0)
+-- ==================================================================
+-- FASE 1: Llenado de la VÍA 0 en TODOS LOS CONJUNTOS (Sets 0 al 3)
+-- ==================================================================
+-- Set 0
+LW R1, 0(R0)    -- Fallo (Carga Vía 0).  GTKWave R1 -> X"00000001"
+LW R1, 4(R0)    -- Acierto.              GTKWave R1 -> X"00000002"
 
--- ACIERTO (Hit). Leemos la tercera palabra del Bloque A.
--- Valor esperado en R3: X"00000003" (3 en decimal)
-LW R3, 8(R0)
+-- Set 1
+LW R1, 16(R0)   -- Fallo (Carga Vía 0).  GTKWave R1 -> X"00000005"
+LW R1, 20(R0)   -- Acierto.              GTKWave R1 -> X"00000006"
 
+-- Set 2
+LW R1, 32(R0)   -- Fallo (Carga Vía 0).  GTKWave R1 -> X"00000009"
+LW R1, 36(R0)   -- Acierto.              GTKWave R1 -> X"0000000A"
 
--- ------------------------------------------------------------------
--- 2. PRUEBA EN LA VÍA 2 (Internamente Vía 1 de la caché)
--- ------------------------------------------------------------------
--- FALLO (Miss). La dir 64 es la palabra 16. Mapea al Conjunto 0.
--- Como la Vía 0 está ocupada por el Bloque A, la caché aloja el Bloque B en la Vía 1.
--- Valor esperado en R4: X"00000011" (17 en decimal)
-LW R4, 64(R0)
-
--- ACIERTO (Hit). Leemos la siguiente palabra del Bloque B en la Vía 1.
--- Valor esperado en R5: X"00000012" (18 en decimal)
-LW R5, 68(R0)
+-- Set 3
+LW R1, 48(R0)   -- Fallo (Carga Vía 0).  GTKWave R1 -> X"0000000D"
+LW R1, 52(R0)   -- Acierto.              GTKWave R1 -> X"0000000E"
 
 
--- ------------------------------------------------------------------
--- 3. PRUEBA EN LA VÍA 1 OTRA VEZ (Forzando reemplazo FIFO)
--- ------------------------------------------------------------------
--- FALLO (Miss). La dir 128 es la palabra 32. Mapea al Conjunto 0.
--- El Conjunto 0 está lleno (Vía 0: Bloq A, Vía 1: Bloq B). 
--- Por política FIFO, se expulsa el más antiguo (Vía 0, Bloq A) 
--- y se carga el Bloque C en la Vía 0.
--- Valor esperado en R6: X"00000021" (33 en decimal)
-LW R6, 128(R0)
+-- ==================================================================
+-- FASE 2: Llenado de la VÍA 1 en TODOS LOS CONJUNTOS (Sets 0 al 3)
+-- ==================================================================
+-- Set 0
+LW R1, 64(R0)   -- Fallo (Carga Vía 1).  GTKWave R1 -> X"00000011"
+LW R1, 68(R0)   -- Acierto.              GTKWave R1 -> X"00000012"
 
--- ACIERTO (Hit). Leemos del nuevo Bloque C alojado en la Vía 0.
--- Valor esperado en R7: X"00000022" (34 en decimal)
-LW R7, 132(R0)
+-- Set 1
+LW R1, 80(R0)   -- Fallo (Carga Vía 1).  GTKWave R1 -> X"00000015"
+LW R1, 84(R0)   -- Acierto.              GTKWave R1 -> X"00000016"
+
+-- Set 2
+LW R1, 96(R0)   -- Fallo (Carga Vía 1).  GTKWave R1 -> X"00000019"
+LW R1, 100(R0)  -- Acierto.              GTKWave R1 -> X"0000001A"
+
+-- Set 3
+LW R1, 112(R0)  -- Fallo (Carga Vía 1).  GTKWave R1 -> X"0000001D"
+LW R1, 116(R0)  -- Acierto.              GTKWave R1 -> X"0000001E"
+
+
+-- ==================================================================
+-- FASE 3: Reemplazo FIFO de la VÍA 0 en TODOS LOS CONJUNTOS
+-- ==================================================================
+-- La caché está llena. Entran nuevos bloques limpios que expulsan
+-- a los más antiguos (los cargados en la Fase 1 en la Vía 0).
+
+-- Set 0
+LW R1, 128(R0)  -- Fallo (Reemplazo).    GTKWave R1 -> X"00000021"
+LW R1, 132(R0)  -- Acierto.              GTKWave R1 -> X"00000022"
+
+-- Set 1
+LW R1, 144(R0)  -- Fallo (Reemplazo).    GTKWave R1 -> X"00000025"
+LW R1, 148(R0)  -- Acierto.              GTKWave R1 -> X"00000026"
+
+-- Set 2
+LW R1, 160(R0)  -- Fallo (Reemplazo).    GTKWave R1 -> X"00000029"
+LW R1, 164(R0)  -- Acierto.              GTKWave R1 -> X"0000002A"
+
+-- Set 3
+LW R1, 176(R0)  -- Fallo (Reemplazo).    GTKWave R1 -> X"0000002D"
+LW R1, 180(R0)  -- Acierto.              GTKWave R1 -> X"0000002E"
