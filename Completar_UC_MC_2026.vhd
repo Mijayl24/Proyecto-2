@@ -221,15 +221,16 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				end if;
 
 			elsif (((RE= '1') or (WE= '1')) and (hit='0')) then  --fallo de lectura/escritura
-				if(addr_non_cacheable = '1') then
-					next_state <= single_word_transfer_addr;
-				elsif(WE = '1') then
-					inc_m <= '1';
-					next_state <= single_word_transfer_addr;
+				Bus_req <= '1';
+				if(Bus_grant = '0') then
+					next_state <= Inicio;
 				else
-					inc_m <= '1';
-					next_state <= block_transfer_addr;
-					
+					if(addr_non_cacheable = '1' or WE = '1') then
+						one_word <= '1';
+						next_state <= single_word_transfer_addr;
+					else
+						next_state <= block_transfer_addr;
+					end if;
 				end if;
 			end if;
 
@@ -286,11 +287,10 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 					mux_output <= "01";
 				else
 					MC_send_data <= '1';
-					if(addr_non_cacheable = '0') then
-						inc_m <= '1';
-					end if;
 				end if;
-
+				if(addr_non_cacheable = '0') then
+					inc_m <= '1';
+				end if;
 				ready <= '1';
 				next_state <= Inicio;
 			end if;
