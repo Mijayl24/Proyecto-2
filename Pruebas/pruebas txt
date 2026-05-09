@@ -50,57 +50,67 @@ signal RAM : RamType := (  			X"10210003", X"1021003E", X"1021005D", X"1021006C"
 
 
 
-RODRIGO SINGLE
-
-architecture Behavioral of RAM_128_32 is
-type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
-signal RAM : RamType := (
-	X"00000001", X"00000005", X"00000000", X"00000000", X"00000002", X"00000000", X"00000000", X"00000000", --word 1,...
-	X"00000003", X"00000000", X"00000000", X"00000000", X"00000004", X"00000000", X"00000000", X"00000000", --word 8,...
-	X"00000005", X"00000000", X"00000000", X"00000000", X"00000006", X"00000000", X"00000000", X"00000000", --word 16,...
-	X"00000007", X"00000000", X"00000000", X"00000000", X"00000008", X"00000000", X"00000000", X"00000000",--word 24,...
-	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 32,...
-	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 40,...
-	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 48,...
-	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 56,...
-	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 64,...
-	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 72,...
-	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 80,...
-	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 88,...
-	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 96,...
-	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 104,...
-	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 112,...
-	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000");--word 120,...
-
-
--------------------------------------------------------------------------
-architecture Behavioral of memoriaRAM_I is
-type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
-signal RAM : RamType := (
-    	X"10000002", X"00000000", X"00000000", X"08010000", X"08020010", X"08030020", X"08040030", X"08010000",        --word 0,1,...
-    	X"08020050", X"08030060", X"08040070", X"0C010040", X"08050040", X"1000FFFF", X"00000000", X"00000000",        --word 8,9,...    		
-        X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",        --word 16,17,...
-    	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",        --word 24,25,...
-    	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",        --word 32,33,...
-    	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",        --word 40,41,...
-    	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",        --word 48,49,...
-    	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",        --word 56,57,...
-    	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",        --word 64,65,...
-    	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",        --word 72,73,...
-    	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",        --word 80,81,...
-    	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",        --word 88,89,...
-    	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",        --word 96,97,...
-    	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",        --word 104,105,...
-    	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",        --word 112,113,...
-    	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000");         --word 120,121,...
-
-
-
---/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-
-
-
 --FalloLecturaAciertoLecturas
+-- Vía 0
+-- Set 0
+--LW R1, 0(R0)    -- Read Miss Clean (Carga Vía 0).   R1 -> X"00000001"
+--LW R1, 4(R0)    -- Read Hit.                        R1 -> X"00000002"
+--LW R1, 8(R0)    -- Read Hit.                        R1 -> X"00000003"
+--LW R1, 12(R0)   -- Read Hit.                        R1 -> X"00000004"
+
+-- Set 1
+--LW R1, 16(R0)   -- Read Miss Clean (Carga Vía 0).   R1 -> X"00000005"
+--LW R1, 20(R0)   -- Read Hit.                        R1 -> X"00000006"
+
+-- Set 2
+--LW R1, 32(R0)   -- Read Miss Clean (Carga Vía 0).   R1 -> X"00000009"
+--LW R1, 36(R0)   -- Read Hit.                        R1 -> X"0000000A"
+
+-- Set 3
+--LW R1, 48(R0)   -- Read Miss Clean (Carga Vía 0).   R1 -> X"0000000D"
+--LW R1, 52(R0)   -- Read Hit.                        R1 -> X"0000000E"
+
+
+-- Vía 1
+-- Set 0
+--LW R1, 64(R0)   -- Read Miss Clean (Carga Vía 1).   R1 -> X"00000011"
+--LW R1, 68(R0)   -- Read Hit.                        R1 -> X"00000012"
+
+-- Set 1
+--LW R1, 80(R0)   -- Read Miss Clean (Carga Vía 1).   R1 -> X"00000015"
+--LW R1, 84(R0)   -- Read Hit.                        R1 -> X"00000016"
+--LW R1, 88(R0)   -- Read Hit.                        R1 -> X"00000017"
+--LW R1, 92(R0)   -- Read Hit.                        R1 -> X"00000018"
+
+-- Set 2
+--LW R1, 96(R0)   -- Read Miss Clean (Carga Vía 1).   R1 -> X"00000019"
+--LW R1, 100(R0)  -- Read Hit.                        R1 -> X"0000001A"
+
+-- Set 3
+--LW R1, 112(R0)  -- Read Hit Miss Clean (Carga Vía 1).   R1 -> X"0000001D"
+--LW R1, 116(R0)  -- Read Hit.                            R1 -> X"0000001E"
+
+
+-- Reemplazo de la vía 0 en todos los conjuntos
+-- Set 0
+--LW R1, 128(R0)  -- Read Hit Miss Clean (Reemplazo). R1 -> X"00000021"
+--LW R1, 132(R0)  -- Read Hit Hit.                    R1 -> X"00000022"
+
+-- Set 1
+--LW R1, 144(R0)  -- Read Miss Clean (Reemplazo). R1 -> X"00000025"
+--LW R1, 148(R0)  -- Read Hit.                    R1 -> X"00000026"
+
+-- Set 2
+--LW R1, 160(R0)  -- Read Miss Clean (Reemplazo).	R1 -> X"00000029"
+--LW R1, 164(R0)  -- Read Hit.                    R1 -> X"0000002A"
+--LW R1, 168(R0)  -- Read Hit.                    R1 -> X"0000002B"
+--LW R1, 172(R0)  -- Read Hit.                    R1 -> X"0000002C"
+
+-- Set 3
+--LW R1, 176(R0)  -- Read Miss Clean (Reemplazo). R1 -> X"0000002D"
+--LW R1, 180(R0)  -- Read Hit.                    R1 -> X"0000002E"
+
+
 architecture Behavioral of RAM_128_32 is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
@@ -126,7 +136,7 @@ signal RAM : RamType := (
 architecture Behavioral of memoriaRAM_I is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
-		X"00000000", X"00000000", X"00000000", X"00000000", X"08010000", X"08010004", X"08010008", X"0801000C", --word 0,...
+		X"10210003", X"1021003E", X"1021005D", X"1021006C", X"08010000", X"08010004", X"08010008", X"0801000C", --word 0,...
         X"08010010", X"08010014", X"08010020", X"08010024", X"08010030", X"08010034", X"08010040", X"08010044", --word 8,...
         X"08010050", X"08010054", X"08010058", X"0801005C", X"08010060", X"08010064", X"08010070", X"08010074", --word 16,...
         X"08010080", X"08010084", X"08010090", X"08010094", X"080100A0", X"080100A4", X"080100A8", X"080100AC", --word 24,...
@@ -149,7 +159,47 @@ signal RAM : RamType := (
 
 
 
---ReadMissDirty	(Tiempo Ejecucion: 4300)		////////////////////////////////////////////77
+--ReadMissDirty	(Tiempo Ejecucion: 4300)
+-- Llenamos y ensuciamos la Vía 0 (Conjuntos 0 al 3)
+--LW R1, 0(R0)    -- Read Miss Clean. Carga Dir 0 en Conjunto 0, Vía 0.
+--SW R1, 4(R0)    -- Write Hit. Marca Conjunto 0, Vía 0 Dirty.
+
+--LW R1, 16(R0)   -- Read Miss Clean. Carga Dir 16 en Conjunto 1, Vía 0.
+--SW R1, 20(R0)   -- Write Hit. Marca Conjunto 1, Vía 0 Dirty.
+
+--LW R1, 32(R0)   -- Read Miss Clean. Carga Dir 32 en Conjunto 2, Vía 0.
+--SW R1, 36(R0)   -- Write Hit. Marca Conjunto 2, Vía 0 Dirty.
+
+--LW R1, 48(R0)   -- Read Miss Clean. Carga Dir 48 en Conjunto 3, Vía 0.
+--SW R1, 52(R0)   -- Write Hit. Marca Conjunto 3, Vía 0 Dirty.
+
+-- Llenamos y ensuciamos la Vía 1 (Conjuntos 0 al 3)
+--LW R1, 64(R0)   -- Read Miss Clean. Carga Dir 64 en Conjunto 0, Vía 1.
+--SW R1, 68(R0)   -- Write Hit. Marca Conjunto 0, Vía 1 Dirty.
+
+--LW R1, 80(R0)   -- Read Miss Clean. Carga Dir 80 en Conjunto 1, Vía 1.
+--SW R1, 84(R0)   -- Write Hit. Marca Conjunto 1, Vía 1 Dirty.
+
+--LW R1, 96(R0)   -- Read Miss Clean. Carga Dir 96 en Conjunto 2, Vía 1.
+--SW R1, 100(R0)  -- Write Hit. Marca Conjunto 2, Vía 1 Dirty.
+
+--LW R1, 112(R0)  -- Read Miss Clean. Carga Dir 112 en Conjunto 3, Vía 1.
+--SW R1, 116(R0)  -- Write Hit. Marca Conjunto 3, Vía 1 Dirty.
+
+
+--LW R2, 128(R0)  -- Read Miss Dirty (Set 0). Expulsa Vía 0 (Dir 0). Copy-Back
+--LW R2, 144(R0)  -- Read Miss Dirty (Set 1). Expulsa Vía 0 (Dir 16). Copy-Back
+--LW R2, 160(R0)  -- Read Miss Dirty (Set 2). Expulsa Vía 0 (Dir 32). Copy-Back
+--LW R2, 176(R0)  -- Read Miss Dirty (Set 3). Expulsa Vía 0 (Dir 48). Copy-Back
+
+
+
+--LW R3, 192(R0)  -- Read Miss Dirty (Set 0). Expulsa Vía 1 (Dir 64). Copy-Back
+--LW R3, 208(R0)  -- Read Miss Dirty (Set 1). Expulsa Vía 1 (Dir 80). Copy-Back
+--LW R3, 224(R0)  -- Read Miss Dirty (Set 2). Expulsa Vía 1 (Dir 96). Copy-Back
+--LW R3, 240(R0)  -- Read Miss Dirty (Set 3). Expulsa Vía 1 (Dir 112). Copy-Back
+
+
 architecture Behavioral of RAM_128_32 is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
@@ -175,7 +225,7 @@ signal RAM : RamType := (
 architecture Behavioral of memoriaRAM_I is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
-		X"00000000", X"00000000", X"00000000", X"00000000", X"08010000", X"0C010004", X"08010010", X"0C010014", --word 0,...
+		X"10210003", X"1021003E", X"1021005D", X"1021006C", X"08010000", X"0C010004", X"08010010", X"0C010014", --word 0,...
         X"08010020", X"0C010024", X"08010030", X"0C010034", X"08010040", X"0C010044", X"08010050", X"0C010054", --word 8,...
         X"08010060", X"0C010064", X"08010070", X"0C010074", X"08020080", X"08020090", X"080200A0", X"080200B0", --word 16,...
         X"080300C0", X"080300D0", X"080300E0", X"080300F0", X"00000000", X"00000000", X"00000000", X"00000000", --word 24,...
@@ -199,7 +249,25 @@ signal RAM : RamType := (
 
 
 
---Scratch	/////////////////////////////////////////////////////////
+
+
+--Scratch
+--LW R5, 0(R0)     -- R5 = X"10000000" (Read Miss Clean)
+--LW R2, 4(R0)     -- R2 = X"00000055" (Read Hit)
+--LW R3, 8(R0)     -- R3 = X"000000AA" (Read Hit)
+--LW R4, 12(R0)    -- R4 = X"000000FF" (Read Hit)
+
+
+--SW R2, 0(R5)     -- Escribe X"55" en la palabra 0 de la Scratch (@ X"10000000") Este dato sera modificado si o si porque IO_Master escribe ZZZs en la primera direccion de la Scratch
+--SW R3, 4(R5)     -- Escribe X"AA" en la palabra 1 de la Scratch (@ X"10000004")
+--SW R4, 8(R5)     -- Escribe X"FF" en la palabra 2 de la Scratch (@ X"10000008")
+
+
+--LW R1, 0(R5)     -- Lee de Scratch. R1 -> Seguramente ZZZs
+--LW R1, 4(R5)     -- Lee de Scratch. R1 -> X"000000AA"
+--LW R1, 8(R5)     -- Lee de Scratch. R1 -> X"000000FF"
+
+
 architecture Behavioral of RAM_128_32 is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
@@ -225,7 +293,7 @@ signal RAM : RamType := (
 architecture Behavioral of memoriaRAM_I is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
-		X"00000000", X"00000000", X"00000000", X"00000000", X"08090000", X"08020004", X"08030008", X"0804000C", --word 0,...
+		X"10210003", X"1021003E", X"1021005D", X"1021006C", X"08090000", X"08020004", X"08030008", X"0804000C", --word 0,...
 		X"0D220000", X"0D230004", X"0D240008", X"09210000", X"09210004", X"09210008", X"00000000", X"00000000", --word 8,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 16,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 24,...
@@ -249,7 +317,11 @@ signal RAM : RamType := (
 
 
 
--- Unaligned		////////////////////////////////////////
+-- Unaligned
+--LW R1, 1(R0)     -- Lectura Unaligned
+--SW R1, 2(R0)     -- Escritura Unaligned
+
+
 architecture Behavioral of RAM_128_32 is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
@@ -283,14 +355,14 @@ signal RAM : RamType := (
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 40,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 48,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 56,...
-		X"0FE10000", X"0FE20004", X"08010008", X"07E1F800", X"0802000C", X"08010004", X"04221000", X"0CC27004", --word 64,...
-		X"0C02000C", X"0CC17008", X"08010008", X"07E1F801", X"0BE10000", X"0BE20004", X"20000000", X"08C17FFF", --word 72,...
+		X"08010000", X"0C017008", X"20000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 64,...
+		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 72,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 80,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 88,...
-		X"08C10014", X"0CC17004", X"1000FFFF", X"20000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 96,...
+		X"08020104", X"0C027004", X"08020108", X"08420000", X"0C027004", X"20000000", X"00000000", X"00000000", --word 96,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 104,...
-		X"08C1001C", X"0CC17004", X"1000FFFF", X"20000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 112,...
-		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000");--word 120,...
+		X"0802010C", X"0C027004", X"1000FFFF", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 112,...
+		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000"); --word 120,...
 
 
 
@@ -300,7 +372,17 @@ signal RAM : RamType := (
 
 
 
--- whiteHit		////////////////////////////////////////////////////
+-- writeHit
+-- Llenamos y ensuciamos la Vía 0 (Conjuntos 0 al 3)
+--LW R1, 0(R0)     -- Fallo. Carga Dir 0 en Conjunto 0, Vía 0.
+--LW R1, 16(R0)    -- Fallo. Carga Dir 16 en Conjunto 1, Vía 0.
+--LW R1, 32(R0)    -- Fallo. Carga Dir 32 en Conjunto 2, Vía 0.
+--LW R1, 48(R0)    -- Fallo. Carga Dir 48 en Conjunto 3, Vía 0.
+--SW R1, 0(R0)     -- Acierto.
+
+--LW R1, 64(R0)    -- Fallo. Carga Dir 64 en Conjunto 0, Vía 1.
+--SW R1, 64(R0)     -- Acierto.
+
 architecture Behavioral of RAM_128_32 is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
@@ -326,7 +408,7 @@ signal RAM : RamType := (
 architecture Behavioral of memoriaRAM_I is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
-		X"00000000", X"00000000", X"00000000", X"00000000", X"08010000", X"08010010", X"08010020", X"08010030", --word 0,...
+		X"10210003", X"1021003E", X"1021005D", X"1021006C", X"08010000", X"08010010", X"08010020", X"08010030", --word 0,...
 		X"0C010000", X"08010040", X"0C010040", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 8,...
         X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 16,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 24,...
@@ -351,7 +433,15 @@ signal RAM : RamType := (
 
 
 
--- whiteMiss		////////////////////////////////////////////////////
+-- writeMiss
+-- Llenamos y ensuciamos la Vía 0 (Conjuntos 0 al 3)
+--LW R1, 0(R0)     -- Fallo. Carga Dir 0 en Conjunto 0, Vía 0.
+--LW R1, 16(R0)    -- Fallo. Carga Dir 16 en Conjunto 1, Vía 0.
+--LW R1, 32(R0)    -- Fallo. Carga Dir 32 en Conjunto 2, Vía 0.
+--SW R1, 48(R0)    -- Fallo. Escribe en MP
+--LW R1, 48(R0)    -- Fallo. Carga Dir 48 en Conjunto 3, Vía 0.
+--SW R1, 64(R0)    -- Fallo. Escribe en MP
+
 architecture Behavioral of RAM_128_32 is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
@@ -377,7 +467,7 @@ signal RAM : RamType := (
 architecture Behavioral of memoriaRAM_I is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
-		X"00000000", X"00000000", X"00000000", X"00000000", X"08010000", X"08010010", X"08010020", X"0C010030", --word 0,...
+		X"10210003", X"1021003E", X"1021005D", X"1021006C", X"08010000", X"08010010", X"08010020", X"0C010030", --word 0,...
         X"08010030", X"0C010040", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 8,...
         X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 16,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 24,...
@@ -401,7 +491,12 @@ signal RAM : RamType := (
 
 
 
--- internalAddr		////////////////////////////////////////
+-- internalAddr
+--LW R3, 0(R0)    -- R3 = X"01000000" (Read Miss Clean)
+--LW R2, 4(R0)    -- R2 = X"00000002" (Read Hit)
+
+--SW R2, 0(R3)    -- Intento de escritura en registro interno. Activa Mem_ERROR
+
 architecture Behavioral of RAM_128_32 is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
@@ -427,8 +522,8 @@ signal RAM : RamType := (
 architecture Behavioral of memoriaRAM_I is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
-		X"00000000", X"00000000", X"00000000", X"00000000", X"08010000", X"08010010", X"08010020", X"0C010030", --word 0,...
-		X"08010030", X"0C010040", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 8,...
+		X"10210003", X"1021003E", X"1021005D", X"1021006C", X"08030000", X"08020004", X"0C620000", X"00000000", --word 0,...
+		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 8,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 16,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 24,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 32,...
@@ -450,13 +545,14 @@ signal RAM : RamType := (
 --/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 
 
+--outOfRange
+--LW R1, 0(R0)    -- R1 = X"00000400" (Dirección inválida, fuera de rango)
+--LW R3, 0(R1)    -- Intento de lectura. Se activa Mem_ERROR y ocurre un Data Abort
 
-
--- internalAddr		////////////////////////////////////////
 architecture Behavioral of RAM_128_32 is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
-	X"01000000", X"00000002", X"00000000", X"00000000", X"08030000", X"08020004", X"0D220000", X"09210000",--word 0...
+	X"00000400", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 0...
 	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 8...
 	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 16...
 	X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 24...
@@ -478,8 +574,8 @@ signal RAM : RamType := (
 architecture Behavioral of memoriaRAM_I is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
-		X"00000000", X"00000000", X"00000000", X"00000000", X"08010000", X"08010010", X"08010020", X"0C010030", --word 0,...
-		X"08010030", X"0C010040", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 8,...
+		X"10210003", X"1021003E", X"1021005D", X"1021006C", X"08010000", X"08230000", X"08230000", X"00000000", --word 0,...
+		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 8,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 16,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 24,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 32,...
@@ -501,7 +597,54 @@ signal RAM : RamType := (
 
 
 
--- completo		////////////////////////////////////////////////////
+-- completo
+-- Llenamos y ensuciamos la Vía 0 (Conjuntos 0 al 3)
+--LW R1, 0(R0)    -- Read Miss Clean. Carga Dir 0 en Conjunto 0, Vía 0.
+--SW R1, 4(R0)    -- Write Hit. Marca Conjunto 0, Vía 0 Dirty.
+
+--LW R1, 16(R0)   -- Read Miss Clean. Carga Dir 16 en Conjunto 1, Vía 0.
+--SW R1, 20(R0)   -- Write Hit. Marca Conjunto 1, Vía 0 Dirty.
+
+--LW R1, 32(R0)   -- Read Miss Clean. Carga Dir 32 en Conjunto 2, Vía 0.
+--SW R1, 36(R0)   -- Write Hit. Marca Conjunto 2, Vía 0 Dirty.
+
+--LW R1, 48(R0)   -- Read Miss Clean. Carga Dir 48 en Conjunto 3, Vía 0.
+--SW R1, 52(R0)   -- Write Hit. Marca Conjunto 3, Vía 0 Dirty.
+
+
+--SW R1, 64(R0)   -- Write Miss. Escribe en MP.
+
+
+--LW R2, 64(R0)   -- Read Miss Clean. Carga Dir 64 en Conjunto 0, Vía 1. (@ X"10000000")
+--LW R3, 80(R0)   -- Read Miss Clean. Carga Dir 80 en Conjunto 1, Vía 1. (X"00000055")
+--LW R1, 96(R0)   -- Read Miss Clean. Carga Dir 96 en Conjunto 2, Vía 1.
+--LW R1, 112(R0)  -- Read Miss Clean. Carga Dir 112 en Conjunto 3, Vía 1.
+
+
+--SW R3, 0(R2)     -- Escribe X"55" en la palabra 0 de la Scratch (@ X"10000000") Este dato sera modificado si o si porque IO_Master escribe ZZZs en la primera direccion de la Scratch
+--SW R3, 4(R2)     -- Escribe X"55" en la palabra 1 de la Scratch (@ X"10000004")
+
+
+--LW R1, 0(R2)     -- Lee de Scratch. R1 -> Seguramente leerá ZZZs
+--LW R1, 4(R2)     -- Lee de Scratch. R1 -> X"000000AA"
+
+
+--LW R3, 128(R0)  -- Read Miss Dirty (Set 0). Expulsa Vía 0 (Dir 0). Copy-Back R3 = X"01000000" 
+--LW R2, 144(R0)  -- Read Miss Dirty (Set 1). Expulsa Vía 0 (Dir 16). Copy-Back R2 = X"00000012"
+--LW R1, 160(R0)  -- Read Miss Dirty (Set 2). Expulsa Vía 0 (Dir 32). Copy-Back
+--LW R1, 176(R0)  -- Read Miss Dirty (Set 3). Expulsa Vía 0 (Dir 48). Copy-Back
+
+
+--SW R2, 0(R3)    -- Intento de escritura en registro interno. Activa Mem_ERROR
+
+--LW R1, 180(R0)  -- Read Miss Clean (Set 0). Expulsa Vía 0 (Dir 64).
+--LW R1, 184(R0)  -- Read Miss Clean (Set 1). Expulsa Vía 0 (Dir 80).
+--LW R1, 188(R0)  -- Read Miss Clean (Set 2). Expulsa Vía 0 (Dir 96).
+--LW R1, 192(R0)  -- Read Miss Clean (Set 3). Expulsa Vía 0 (Dir 112).
+
+
+--LW R1, 1(R0)     -- Unaligned
+
 architecture Behavioral of RAM_128_32 is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
@@ -528,18 +671,18 @@ architecture Behavioral of memoriaRAM_I is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
 		X"10210003", X"1021003E", X"1021005D", X"1021006C", X"08010000", X"0C010004", X"08010010", X"0C010014", --word 0,...
-        X"08010020", X"0C010024", X"08010030", X"0C010034", X"0C010040", X"08020040", X"0C010044", X"08030050", --word 8,...
-        X"0C010054", X"08010060", X"0C010064", X"08010070", X"0C010074", X"0C430000", X"0C430004", X"08410000", --word 16,...
-        X"08410004", X"08030080", X"08020090", X"080100A0", X"080100B0", X"0C620000", X"08610000", X"08010001", --word 24,...
-		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 32,...
-		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 40,...
-		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 48,...
-		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 56,...
-		X"0FE10000", X"0FE20004", X"08010008", X"07E1F800", X"0802000C", X"08010004", X"04221000", X"0CC27004", --word 64,...
-		X"0C02000C", X"0CC17008", X"08010008", X"07E1F801", X"0BE10000", X"0BE20004", X"20000000", X"08C17FFF", --word 72,...
+        X"08010020", X"0C010024", X"08010030", X"0C010034", X"0C010040", X"08040040", X"08030050", X"08010060", --word 8,...
+        X"08010070", X"0C830000", X"0C830004", X"08810000", X"08810004", X"08030080", X"08040090", X"080100A0", --word 16,...
+        X"080100B0", X"0C640000", X"080100B4", X"080100B8", X"080100BC", X"080100C0", X"08010001", X"00000000", --word 24,...
+        X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 32,...
+        X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 40,...
+        X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 48,...
+        X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 56,...
+		X"08010000", X"0C017008", X"20000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 64,...
+		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 72,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 80,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 88,...
-		X"08C10014", X"0CC17004", X"1000FFFF", X"20000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 96,...
+		X"08020104", X"0C027004", X"08020108", X"08420000", X"0C027004", X"20000000", X"00000000", X"00000000", --word 96,...
 		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 104,...
-		X"08C1001C", X"0CC17004", X"1000FFFF", X"20000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 112,...
-		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000");--word 120,...
+		X"0802010C", X"0C027004", X"1000FFFF", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 112,...
+		X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000"); --word 120,...
