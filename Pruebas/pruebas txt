@@ -557,11 +557,10 @@ signal RAM : RamType := (
 
 --SW R2, 0(R3)    -- Intento de escritura en registro interno. Activa Mem_ERROR
 
---LW R1, 180(R0)  -- Read Miss Clean (Set 0). Expulsa Vía 0 (Dir 64).
---LW R1, 184(R0)  -- Read Miss Clean (Set 1). Expulsa Vía 0 (Dir 80).
---LW R1, 188(R0)  -- Read Miss Clean (Set 2). Expulsa Vía 0 (Dir 96).
+--NOP
+--NOP
 --LW R1, 192(R0)  -- Read Miss Clean (Set 3). Expulsa Vía 0 (Dir 112).
-
+--LW R1, 196(R0)  -- Read Hit (Set 2).
 
 --LW R1, 1(R0)     -- Unaligned
 --BEQ -1
