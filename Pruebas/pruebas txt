@@ -546,7 +546,7 @@ signal RAM : RamType := (
 
 
 --LW R1, 0(R2)     -- Lee de Scratch. R1 -> Seguramente leerá ZZZs
---LW R1, 4(R2)     -- Lee de Scratch. R1 -> X"000000AA"
+--LW R1, 4(R2)     -- Lee de Scratch. R1 -> X"00000055"
 
 
 --LW R3, 128(R0)  -- Read Miss Dirty (Set 0). Expulsa Vía 0 (Dir 0). CopyBack R3 = X"01000000" 
