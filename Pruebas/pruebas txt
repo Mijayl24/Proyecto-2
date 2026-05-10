@@ -50,7 +50,7 @@ signal RAM : RamType := (  			X"10210003", X"1021003E", X"1021005D", X"1021006C"
 
 
 
---FalloLecturaAciertoLecturas
+--FalloLecturaAciertoLecturas(2300ns)
 -- Vía 0
 -- Set 0
 --LW R1, 0(R0)    -- Read Miss Clean (Carga Vía 0).   R1 -> X"00000001"
@@ -320,7 +320,7 @@ signal RAM : RamType := (
 
 
 
--- writeHit
+-- writeHit(970ns)
 -- Llenamos y ensuciamos la Vía 0 (Conjuntos 0 al 3)
 --LW R1, 0(R0)     -- Fallo. Carga Dir 0 en Conjunto 0, Vía 0.
 --LW R1, 16(R0)    -- Fallo. Carga Dir 16 en Conjunto 1, Vía 0.
@@ -441,7 +441,7 @@ signal RAM : RamType := (
 
 
 
--- errores
+-- errores(1300ns)
 --LW R3, 4(R0)    -- R3 = X"01000000" (Read Miss Clean)
 --LW R2, 8(R0)    -- R2 = X"00000002" (Read Hit)
 --NOP
