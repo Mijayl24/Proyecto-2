@@ -60,7 +60,7 @@ signal RAM : RamType := (        X"00000001", X"00000000", X"00000000", X"000000
 									X"00001000", X"00000000", X"00000000", X"00000000", X"00001000", X"00000000", X"00000000", X"00000000",--word 112,...
 									X"00001000", X"00000000", X"00000000", X"00000000", X"00001000", X"00000000", X"00000000", X"00000000");--word 120,...
 
---FalloLecturaAciertoLecturas									
+--FalloLecturaAciertoLecturas(Tiempo Ejecucion: 2300ns)									
 -- architecture Behavioral of RAM_128_32 is
 -- type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 -- signal RAM : RamType := (
@@ -82,7 +82,7 @@ signal RAM : RamType := (        X"00000001", X"00000000", X"00000000", X"000000
 -- 									X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000");--word 120,...
 
 
---ReadMissDirty
+--ReadMissDirty (Tiempo Ejecucion: 4300ns)
 -- architecture Behavioral of RAM_128_32 is
 -- type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 -- signal RAM : RamType := (
@@ -103,7 +103,7 @@ signal RAM : RamType := (        X"00000001", X"00000000", X"00000000", X"000000
 -- 									X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000",--word 112,...
 -- 									X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000");--word 120,...
 
---Scratch
+--Scratch(Tiempo Ejecucion: 700ns)
 -- architecture Behavioral of RAM_128_32 is
 -- type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 -- signal RAM : RamType := (
@@ -126,7 +126,7 @@ signal RAM : RamType := (        X"00000001", X"00000000", X"00000000", X"000000
 
 
 
---writeHit
+-- writeHit(Tiempo Ejecucion: 970ns)
 -- architecture Behavioral of RAM_128_32 is
 -- type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 -- signal RAM : RamType := (
@@ -147,7 +147,7 @@ signal RAM : RamType := (        X"00000001", X"00000000", X"00000000", X"000000
 -- 									X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 112,...
 -- 									X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000"); --word 120,...
 
---writeMiss
+-- writeMiss(Tiempo Ejecucion: 1000ns)
 -- architecture Behavioral of RAM_128_32 is
 -- type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 -- signal RAM : RamType := (
@@ -169,7 +169,7 @@ signal RAM : RamType := (        X"00000001", X"00000000", X"00000000", X"000000
 -- 									X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000"); --word 120,...
 
 
---Errores
+--Errores(Tiempo Ejecucion: 1300 ns)
 -- architecture Behavioral of RAM_128_32 is
 -- type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 -- signal RAM : RamType := (
@@ -192,7 +192,7 @@ signal RAM : RamType := (        X"00000001", X"00000000", X"00000000", X"000000
 
 
 
---Completo
+--Completo(Tiempo Ejecucion: 3900ns)
 -- architecture Behavioral of RAM_128_32 is
 -- type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 -- signal RAM : RamType := (
@@ -213,7 +213,7 @@ signal RAM : RamType := (        X"00000001", X"00000000", X"00000000", X"000000
 -- 									X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", --word 112,...
 -- 									X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000", X"00000000"); --word 120,...
 										
---Bucle
+--Bucle(Tiempo Ejecucion: 5500ns)
 -- architecture Behavioral of RAM_128_32 is
 -- type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 -- signal RAM : RamType := (
